@@ -90,16 +90,70 @@
         </div>
     </div>
 
-    <script>
+<script>
+        // 1. Change Image URL
+        function changeImage(imgElement) {
+            const newUrl = prompt("Paste the URL of your new profile image:", imgElement.src);
+            if (newUrl && newUrl.trim() !== "") {
+                imgElement.src = newUrl;
+            }
+        }
+
+        // 2. Change Link URL
+        function changeLink(linkElement, event) {
+            event.preventDefault(); // Stop from clicking while editing
+            const newHref = prompt("Enter the URL this link should go to:", linkElement.getAttribute('data-href') || "https://");
+            if (newHref && newHref.trim() !== "") {
+                linkElement.setAttribute('data-href', newHref);
+            }
+        }
+
+        // 3. Add New Project Card
+        function addCard() {
+            const grid = document.getElementById('project-grid');
+            const newCard = document.createElement('div');
+            newCard.className = 'glass-card p-10 rounded-[2rem]';
+            newCard.innerHTML = `
+                <div class="flex gap-2 mb-6">
+                    <span class="badge" contenteditable="true">New Tech</span>
+                </div>
+                <h3 class="text-3xl font-black mb-3 tracking-tight" contenteditable="true">New Project</h3>
+                <p class="text-gray-500 font-medium mb-8" contenteditable="true">Describe this project here.</p>
+                <a href="#" class="text-sm font-black uppercase tracking-widest border-b-2 border-black pb-1 editable-link" onclick="changeLink(this, event)" data-href="https://#">View Project ↗</a>
+            `;
+            grid.appendChild(newCard);
+        }
+
+        // 4. Export the Site
         function exportSite() {
-            // 1. Clone the canvas so we don't mess up the live editor
+            // Clone the canvas so we don't ruin the live editor
             const clone = document.getElementById('template-canvas').cloneNode(true);
             
-            // 2. Remove all contenteditable attributes from the clone
+            // Clean up the clone for the final production code
             const editableElements = clone.querySelectorAll('[contenteditable]');
             editableElements.forEach(el => el.removeAttribute('contenteditable'));
+            
+            const editableImages = clone.querySelectorAll('.editable-img');
+            editableImages.forEach(img => {
+                img.classList.remove('editable-img');
+                img.removeAttribute('onclick');
+                img.removeAttribute('title');
+            });
 
-            // 3. Wrap it in the full HTML structure and inject the Watermark
+            const editableLinks = clone.querySelectorAll('.editable-link');
+            editableLinks.forEach(link => {
+                link.classList.remove('editable-link');
+                link.removeAttribute('onclick');
+                // Set the real href to the one they typed in
+                link.href = link.getAttribute('data-href') || '#';
+                link.removeAttribute('data-href');
+            });
+
+            // Remove the "Add Card" button from the final site
+            const builderOnly = clone.querySelectorAll('.builder-only');
+            builderOnly.forEach(el => el.remove());
+
+            // Build the final HTML with the injected content
             const finalHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,7 +173,7 @@
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    \${clone.innerHTML}
+    ${clone.innerHTML}
 
     <div id="dg-watermark" class="dg-wm" onclick="window.location.href='https://dgps.dev/credits.html'">
         <img width="48" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIxMDAsMTAgMTgwLDgwIDEwMCwxOTAgMjAsODAiIGZpbGw9IiM5ZjRiZmYiLz48L3N2Zz4=" alt="Built with DG Maker">
@@ -136,7 +190,7 @@
 </body>
 </html>`;
 
-            // 4. Show the modal
+            // Show the modal with the code
             document.getElementById('final-code').value = finalHTML;
             document.getElementById('code-modal').style.display = 'flex';
         }
