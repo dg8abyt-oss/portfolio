@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Maker | DG.DEV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; background-color: #f4f4f5; }</style>
+</head>
+<body class="p-6 md:p-12 min-h-screen flex items-center justify-center">
+    
+    <div class="max-w-5xl w-full bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col md:flex-row border border-gray-200">
+        
+        <div class="bg-black p-12 text-white md:w-2/5 flex flex-col justify-between">
+            <div>
+                <h1 class="text-4xl font-black tracking-tighter mb-4">DG. Maker</h1>
+                <p class="text-gray-400 font-medium leading-relaxed">
+                    Build your own premium portfolio instantly. Free to use, but all generated sites require the DG watermark to remain intact.
+                </p>
+            </div>
+            <a href="index.html" class="text-sm font-bold text-gray-500 hover:text-white mt-12 block">&larr; Back to main site</a>
+        </div>
+
+        <div class="p-12 md:w-3/5 bg-white">
+            <div class="space-y-5">
+                <div>
+                    <label class="text-xs font-black uppercase text-gray-400 tracking-widest block mb-2">Your Name</label>
+                    <input type="text" id="name" placeholder="John Doe" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-black focus:ring-1 focus:ring-black transition">
+                </div>
+                <div>
+                    <label class="text-xs font-black uppercase text-gray-400 tracking-widest block mb-2">Headline</label>
+                    <input type="text" id="headline" placeholder="I build fast websites." class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-black transition">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-black uppercase text-gray-400 tracking-widest block mb-2">Project Name</label>
+                        <input type="text" id="p1" placeholder="Cool App" class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-black transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-black uppercase text-gray-400 tracking-widest block mb-2">Project URL</label>
+                        <input type="text" id="p1url" placeholder="https://..." class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-black transition">
+                    </div>
+                </div>
+                <button onclick="generate()" class="w-full bg-black text-white font-black py-5 rounded-xl hover:bg-gray-800 transition active:scale-[0.98] mt-4 shadow-lg">GENERATE MY SITE</button>
+            </div>
+
+            <div id="result" class="hidden mt-8">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-xs font-black text-green-600 uppercase tracking-widest">Success</p>
+                    <button onclick="copyCode()" class="text-xs font-black text-black hover:text-gray-500 uppercase tracking-widest cursor-pointer border-b border-black">Copy Code</button>
+                </div>
+                <textarea id="output" class="w-full h-40 p-4 bg-gray-900 text-green-400 font-mono text-xs rounded-xl border-none outline-none resize-none" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generate() {
+            const data = {
+                name: document.getElementById('name').value || "Developer",
+                headline: document.getElementById('headline').value || "Building the future.",
+                p1: document.getElementById('p1').value || "My First Project",
+                p1url: document.getElementById('p1url').value || "#"
+            };
+
+            const template = `<!DOCTYPE html>
+<html>
+<head>
+    <title>\${data.name} | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #fafafa; }
+        .card { background: white; border: 1px solid #eaeaea; transition: all 0.3s ease; }
+        .card:hover { border-color: black; transform: translateY(-4px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1); }
+        .dg-wm { position: fixed; bottom: 24px; right: 24px; z-index: 9999; cursor: pointer; transition: transform 0.2s; }
+        .dg-wm:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body class="text-gray-900">
+    <nav class="max-w-4xl mx-auto p-8 font-black text-2xl tracking-tighter">\${data.name}<\/nav>
+    <main class="max-w-4xl mx-auto px-8 py-24">
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-12">\${data.headline}<\/h1>
+        
+        <h2 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-6">My Work<\/h2>
+        <a href="\${data.p1url}" class="card block p-10 rounded-[2rem]">
+            <h3 class="font-black text-3xl mb-2">\${data.p1}<\/h3>
+            <p class="text-gray-500 font-medium">Click to view project &rarr;<\/p>
+        </a>
+    </main>
+
+    <div id="dg-watermark" class="dg-wm" onclick="window.location.href='https://dgps.dev/credits.html'">
+        <img width="48" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIxMDAsMTAgMTgwLDgwIDEwMCwxOTAgMjAsODAiIGZpbGw9IiM5ZjRiZmYiLz48L3N2Zz4=" alt="Built with DG Maker">
+    </div>
+
+    <script>
+        // Anti-Tamper Security Script
+        setInterval(() => {
+            const wm = document.getElementById('dg-watermark');
+            if(!wm || wm.style.display === 'none' || wm.style.visibility === 'hidden' || wm.style.opacity === '0' || wm.offsetHeight === 0) {
+                window.location.href = 'https://dgps.dev/credits.html';
+            }
+        }, 2500);
+    <\/script>
+</body>
+</html>`;
+            
+            document.getElementById('output').value = template;
+            document.getElementById('result').classList.remove('hidden');
+        }
+
+        function copyCode() {
+            const copyText = document.getElementById("output");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Code copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
