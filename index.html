@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #fafafa; color: #111; -webkit-font-smoothing: antialiased; }
-        .glass-card { background: #ffffff; border: 1px solid #eaeaea; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card { background: #ffffff; border: 1px solid #eaeaea; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: block; }
         .glass-card:hover { border-color: #111; box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); transform: translateY(-4px); }
         .badge { font-size: 0.65rem; letter-spacing: 0.05em; padding: 0.25rem 0.5rem; border-radius: 99px; background: #f3f4f6; color: #374151; font-weight: 700; text-transform: uppercase; }
     </style>
@@ -19,13 +19,12 @@
     <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center">
         <div class="text-2xl font-black tracking-tighter">DG.</div>
         <div class="flex gap-6 text-sm font-semibold items-center">
-            <a href="maker.html" class="text-gray-500 hover:text-black transition">Maker Tool</a>
             <a href="https://dhruvs.host" class="text-gray-500 hover:text-black transition">My Company</a>
             <a href="https://contact.dgps.dev/" class="bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition shadow-sm">Contact</a>
         </div>
     </nav>
 
-    <header class="max-w-6xl mx-auto px-6 pt-24 pb-32">
+    <header class="max-w-6xl mx-auto px-6 pt-24 pb-24">
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-gray-200 mb-8 shadow-sm">
             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
             <span class="text-xs font-bold uppercase tracking-widest text-gray-600">10 Years Old • Developer</span>
@@ -40,65 +39,63 @@
         </p>
     </header>
 
+    <section class="max-w-6xl mx-auto px-6 pb-16">
+        <div class="bg-black text-white rounded-[2rem] p-10 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl transform transition hover:scale-[1.01]">
+            <div>
+                <span class="text-xs font-black uppercase tracking-widest text-gray-400 mb-4 block">Free Tool</span>
+                <h2 class="text-4xl font-black tracking-tight mb-4">Build your own portfolio.</h2>
+                <p class="text-gray-400 font-medium max-w-lg">I built a visual, click-to-edit site builder. You can use my exact UI design to create your own portfolio instantly right in your browser.</p>
+            </div>
+            <a href="maker.html" class="bg-white text-black px-8 py-4 rounded-full font-black hover:bg-gray-200 transition whitespace-nowrap">Open Visual Builder &rarr;</a>
+        </div>
+    </section>
+
     <section id="work" class="max-w-6xl mx-auto px-6 pb-40">
         <h2 class="text-sm font-black uppercase tracking-widest text-gray-400 mb-8">Selected Projects</h2>
         
         <div class="grid md:grid-cols-2 gap-8">
-            
-            <a href="https://gateway.dgps.dev/" class="glass-card p-10 rounded-[2rem] block group">
+            <a href="https://gateway.dgps.dev/" class="glass-card p-10 rounded-[2rem] group">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="flex gap-2">
-                        <span class="badge">Flask</span>
-                        <span class="badge">Vercel Serverless</span>
-                    </div>
+                    <div class="flex gap-2"><span class="badge">Flask</span><span class="badge">Vercel Serverless</span></div>
                     <span class="text-gray-300 group-hover:text-black transition transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
                 </div>
                 <h3 class="text-3xl font-black mb-3 tracking-tight">AI Gateway</h3>
                 <p class="text-gray-500 font-medium">Domain-restricted secure API management and orchestration.</p>
             </a>
 
-            <a href="https://tictactoe.dgps.dev/" class="glass-card p-10 rounded-[2rem] block group">
+            <a href="https://tictactoe.dgps.dev/" class="glass-card p-10 rounded-[2rem] group">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="flex gap-2">
-                        <span class="badge">Next.js</span>
-                        <span class="badge">WebSockets</span>
-                    </div>
+                    <div class="flex gap-2"><span class="badge">Next.js</span><span class="badge">WebSockets</span></div>
                     <span class="text-gray-300 group-hover:text-black transition transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
                 </div>
                 <h3 class="text-3xl font-black mb-3 tracking-tight">Tic Tac Toe</h3>
                 <p class="text-gray-500 font-medium">Real-time multiplayer gaming engine with instant state sync.</p>
             </a>
 
-            <a href="https://toothbrush.dgps.dev/" class="glass-card p-10 rounded-[2rem] block group">
+            <a href="https://toothbrush.dgps.dev/" class="glass-card p-10 rounded-[2rem] group">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="flex gap-2">
-                        <span class="badge">Static HTML</span>
-                    </div>
+                    <div class="flex gap-2"><span class="badge">Static HTML</span></div>
                     <span class="text-gray-300 group-hover:text-black transition transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
                 </div>
                 <h3 class="text-3xl font-black mb-3 tracking-tight">Brushing Timer</h3>
                 <p class="text-gray-500 font-medium">Just a simple timer to make sure you brush your teeth long enough.</p>
             </a>
 
-            <a href="https://contact.dgps.dev/" class="glass-card p-10 rounded-[2rem] block group">
+            <a href="https://contact.dgps.dev/" class="glass-card p-10 rounded-[2rem] group">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="flex gap-2">
-                        <span class="badge">Static HTML</span>
-                        <span class="badge">Security</span>
-                    </div>
+                    <div class="flex gap-2"><span class="badge">Static HTML</span><span class="badge">Security</span></div>
                     <span class="text-gray-300 group-hover:text-black transition transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
                 </div>
                 <h3 class="text-3xl font-black mb-3 tracking-tight">Secure Contact</h3>
                 <p class="text-gray-500 font-medium">An encrypted portal designed for direct, secure inquiries.</p>
             </a>
-
         </div>
     </section>
 
     <footer class="border-t border-gray-200 bg-white">
         <div class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <span class="text-sm font-bold text-gray-400">© 2026 Dhruv Gowda • dgps.dev</span>
-            <span class="text-sm font-bold text-gray-400">Future Software Engineer</span>
+            <span class="text-sm font-bold text-gray-400">Software Engineer</span>
         </div>
     </footer>
 
