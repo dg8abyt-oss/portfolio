@@ -125,14 +125,17 @@
     <div id="code-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[200] flex items-center justify-center p-6 backdrop-blur-sm builder-only">
         <div class="bg-white max-w-4xl w-full rounded-[2rem] p-8 shadow-2xl flex flex-col h-[80vh]">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black tracking-tight">Your Code is Ready</h2>
+                <h2 class="text-2xl font-black tracking-tight">Your Site is Ready</h2>
                 <button onclick="document.getElementById('code-modal').style.display='none'" class="text-gray-400 hover:text-black font-black bg-gray-100 px-4 py-2 rounded-full">Close ✕</button>
             </div>
-            <p class="text-sm text-gray-500 mb-4 font-medium">Copy the code below. The DG watermark and anti-tamper security have been automatically injected.</p>
+            <p class="text-sm text-gray-500 mb-4 font-medium">Download the file or copy the code. The DG watermark and anti-tamper security have been automatically injected.</p>
             
             <textarea id="final-code" class="w-full flex-grow p-6 bg-gray-50 border border-gray-200 rounded-[1rem] font-mono text-xs outline-none focus:border-black resize-none" readonly></textarea>
             
-            <button onclick="copyCode()" class="w-full bg-black text-white py-4 rounded-xl font-black mt-6 hover:bg-gray-800 transition shadow-lg active:scale-[0.98]">COPY HTML TO CLIPBOARD</button>
+            <div class="flex gap-4 mt-6">
+                <button onclick="copyCode()" class="w-1/3 bg-gray-200 text-black py-4 rounded-xl font-black hover:bg-gray-300 transition shadow-lg active:scale-[0.98]">COPY CODE</button>
+                <button onclick="downloadCode()" class="w-2/3 bg-black text-white py-4 rounded-xl font-black hover:bg-gray-800 transition shadow-lg active:scale-[0.98]">DOWNLOAD INDEX.HTML</button>
+            </div>
         </div>
     </div>
 
@@ -154,7 +157,6 @@
             if (target) {
                 activeEl = target;
                 
-                // Set Toolbar Label
                 const typeLabel = document.getElementById('el-type');
                 if(target.classList.contains('glass-card')) typeLabel.innerText = "Card";
                 else if(target.classList.contains('editable-img')) typeLabel.innerText = "Image";
@@ -163,7 +165,6 @@
                 else if(target.classList.contains('editable-link')) typeLabel.innerText = "Link";
                 else typeLabel.innerText = "Element";
 
-                // Show UI
                 overlay.classList.remove('hidden');
                 toolbar.classList.remove('scale-0', 'opacity-0');
                 toolbar.classList.add('scale-100', 'opacity-100');
@@ -210,18 +211,14 @@
             let newW = startWidth;
             let newH = startHeight;
 
-            // Horizontal changes
             if (currentHandle.includes('e')) newW = startWidth + dx;
             if (currentHandle.includes('w')) newW = startWidth - dx; 
-            
-            // Vertical changes
             if (currentHandle.includes('s')) newH = startHeight + dy;
             if (currentHandle.includes('n')) newH = startHeight - dy;
 
             if (newW > 20) activeEl.style.width = newW + 'px';
             if (newH > 20) activeEl.style.height = newH + 'px';
 
-            // Keep images from stretching weirdly
             if (activeEl.tagName === 'IMG') activeEl.style.objectFit = 'cover';
 
             updateOverlay();
@@ -230,7 +227,7 @@
         document.addEventListener('mouseup', () => { isResizing = false; });
         window.addEventListener('scroll', updateOverlay, true);
         window.addEventListener('resize', updateOverlay);
-        document.addEventListener('input', updateOverlay); // Update if typing text
+        document.addEventListener('input', updateOverlay);
 
 
         // --- TOOLBAR FUNCTIONS ---
@@ -281,15 +278,13 @@
             grid.appendChild(newCard);
         }
 
-       // --- EXPORT ---
+        // --- EXPORT ---
         function exportSite() {
             const clone = document.getElementById('template-canvas').cloneNode(true);
             
-            // Strip editor tags
             const editableElements = clone.querySelectorAll('[contenteditable]');
             editableElements.forEach(el => el.removeAttribute('contenteditable'));
             
-            // Clean up Images
             const editableImages = clone.querySelectorAll('.editable-img');
             editableImages.forEach(img => {
                 img.classList.remove('editable-img');
@@ -297,7 +292,6 @@
                 img.removeAttribute('title');
             });
 
-            // Clean up Links
             const editableLinks = clone.querySelectorAll('.editable-link');
             editableLinks.forEach(link => {
                 link.classList.remove('editable-link');
@@ -306,11 +300,9 @@
                 link.removeAttribute('data-href');
             });
 
-            // Remove all builder tools inside canvas
             const builderOnly = clone.querySelectorAll('.builder-only');
             builderOnly.forEach(el => el.remove());
 
-            // THE FIX: Sneaky serverless script injection
             const finalHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -344,6 +336,29 @@
 
             document.getElementById('final-code').value = finalHTML;
             document.getElementById('code-modal').style.display = 'flex';
+        }
+
+        function copyCode() {
+            const textArea = document.getElementById("final-code");
+            textArea.select();
+            document.execCommand("copy");
+            alert("Code copied to clipboard!");
+        }
+
+        // --- NEW DOWNLOAD FEATURE ---
+        function downloadCode() {
+            const htmlContent = document.getElementById("final-code").value;
+            const blob = new Blob([htmlContent], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "index.html";
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>
