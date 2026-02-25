@@ -143,8 +143,8 @@
         let startX, startY, startWidth, startHeight;
 
         // --- GLOBAL CLICK SELECTION ---
-        document.addEventListener('click', (e) => {
-            if (isResizing) return;
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('resize-handle')) return; // handled by resize down
             if (e.target.closest('.builder-only') || e.target.closest('#element-toolbar')) return;
 
             const target = e.target.closest('.glass-card, .editable-img, [contenteditable="true"], .badge, .editable-link');
@@ -239,7 +239,6 @@
             const clone = activeEl.cloneNode(true);
             activeEl.parentNode.insertBefore(clone, activeEl.nextSibling);
             
-            // Re-bind click event to new clone if needed (event delegation handles this mostly)
             activeEl = clone;
             updateOverlay();
         }
@@ -255,7 +254,6 @@
 
         // --- MEDIA EDITS ---
         function changeImage(imgElement) {
-            // Only prompt if not currently resizing
             if(isResizing) return;
             const newUrl = prompt("Paste the URL of your new profile image:", imgElement.src);
             if (newUrl && newUrl.trim() !== "") imgElement.src = newUrl;
@@ -283,7 +281,7 @@
             grid.appendChild(newCard);
         }
 
-// --- EXPORT ---
+        // --- EXPORT ---
         function exportSite() {
             const clone = document.getElementById('template-canvas').cloneNode(true);
             
@@ -312,7 +310,7 @@
             const builderOnly = clone.querySelectorAll('.builder-only');
             builderOnly.forEach(el => el.remove());
 
-            // THE FIX: Removed the backslash before ${clone.innerHTML}
+            // Notice: The backslash is gone below so it correctly injects the HTML
             const finalHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -352,6 +350,13 @@
 
             document.getElementById('final-code').value = finalHTML;
             document.getElementById('code-modal').style.display = 'flex';
+        }
+
+        function copyCode() {
+            const textArea = document.getElementById("final-code");
+            textArea.select();
+            document.execCommand("copy");
+            alert("Code copied to clipboard! You can now host it anywhere.");
         }
     </script>
 </body>
