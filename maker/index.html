@@ -283,7 +283,7 @@
             grid.appendChild(newCard);
         }
 
-        // --- EXPORT ---
+// --- EXPORT ---
         function exportSite() {
             const clone = document.getElementById('template-canvas').cloneNode(true);
             
@@ -312,6 +312,7 @@
             const builderOnly = clone.querySelectorAll('.builder-only');
             builderOnly.forEach(el => el.remove());
 
+            // THE FIX: Removed the backslash before ${clone.innerHTML}
             const finalHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -332,7 +333,7 @@
 </head>
 <body class="selection:bg-black selection:text-white">
 
-    \${clone.innerHTML}
+    ${clone.innerHTML}
 
     <div id="dg-watermark" class="dg-wm" onclick="window.location.href='https://dgps.dev/credits'">
         <img width="48" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQwIiBoZWlnaHQ9IjI0MCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBvbHlnb24gcG9pbnRzPSIxMDAsMTAgMTgwLDgwIDEwMCwxOTAgMjAsODAiIGZpbGw9IiM5ZjRiZmYiLz48L3N2Zz4=" alt="Built with DG Maker">
@@ -351,13 +352,6 @@
 
             document.getElementById('final-code').value = finalHTML;
             document.getElementById('code-modal').style.display = 'flex';
-        }
-
-        function copyCode() {
-            const textArea = document.getElementById("final-code");
-            textArea.select();
-            document.execCommand("copy");
-            alert("Code copied to clipboard! You can now host it anywhere.");
         }
     </script>
 </body>
